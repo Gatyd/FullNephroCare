@@ -1,0 +1,4346 @@
+openapi: 3.0.3
+info:
+  title: NEPHROCARE API
+  version: 0.1.0
+  description: Une plateforme web dédiée à la gestion et au suivi des données des
+    patients atteints de maladie rénale chronique
+paths:
+  /consultations/:
+    get:
+      operationId: consultations_list
+      description: API endpoint pour la gestion des consultations.
+      parameters:
+      - in: query
+        name: medecin
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: patient
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type_consultation
+        schema:
+          type: string
+          enum:
+          - INITIALE
+          - SUIVI
+          - URGENCE
+        description: |-
+          * `INITIALE` - Consultation initiale
+          * `SUIVI` - Consultation de suivi
+          * `URGENCE` - Consultation d'urgence
+      tags:
+      - consultations
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Consultation'
+          description: ''
+    post:
+      operationId: consultations_create
+      description: API endpoint pour la gestion des consultations.
+      tags:
+      - consultations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsultationCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConsultationCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConsultationCreate'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationCreate'
+          description: ''
+  /consultations/{id}/:
+    get:
+      operationId: consultations_retrieve
+      description: API endpoint pour la gestion des consultations.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Consultation.
+        required: true
+      tags:
+      - consultations
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consultation'
+          description: ''
+    put:
+      operationId: consultations_update
+      description: API endpoint pour la gestion des consultations.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Consultation.
+        required: true
+      tags:
+      - consultations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsultationCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConsultationCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConsultationCreate'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationCreate'
+          description: ''
+    patch:
+      operationId: consultations_partial_update
+      description: API endpoint pour la gestion des consultations.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Consultation.
+        required: true
+      tags:
+      - consultations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedConsultationCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedConsultationCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedConsultationCreate'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationCreate'
+          description: ''
+    delete:
+      operationId: consultations_destroy
+      description: API endpoint pour la gestion des consultations.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Consultation.
+        required: true
+      tags:
+      - consultations
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /consultations/{id}/add_examen/:
+    post:
+      operationId: consultations_add_examen_create
+      description: API endpoint pour la gestion des consultations.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Consultation.
+        required: true
+      tags:
+      - consultations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Consultation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Consultation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Consultation'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consultation'
+          description: ''
+  /consultations/{id}/add_prescription/:
+    post:
+      operationId: consultations_add_prescription_create
+      description: API endpoint pour la gestion des consultations.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Consultation.
+        required: true
+      tags:
+      - consultations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Consultation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Consultation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Consultation'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consultation'
+          description: ''
+  /consultations/historique/:
+    get:
+      operationId: consultations_historique_retrieve
+      description: Récupère l'historique complet des consultations pour un patient
+        donné.
+      tags:
+      - consultations
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consultation'
+          description: ''
+  /criteres/:
+    get:
+      operationId: criteres_list
+      description: API endpoint pour la gestion des critères d'alerte.
+      parameters:
+      - in: query
+        name: actif
+        schema:
+          type: boolean
+      - in: query
+        name: createur
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type_alerte
+        schema:
+          type: string
+          enum:
+          - CREATININE
+          - DFU
+          - EXAMEN
+        description: |-
+          * `DFU` - DFU en dessous du seuil
+          * `CREATININE` - Créatinine au-dessus du seuil
+          * `EXAMEN` - Résultat d'examen anormal
+      tags:
+      - criteres
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlerteCritere'
+          description: ''
+    post:
+      operationId: criteres_create
+      description: API endpoint pour la gestion des critères d'alerte.
+      tags:
+      - criteres
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlerteCritere'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AlerteCritere'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AlerteCritere'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlerteCritere'
+          description: ''
+  /criteres/{id}/:
+    get:
+      operationId: criteres_retrieve
+      description: API endpoint pour la gestion des critères d'alerte.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this alerte critere.
+        required: true
+      tags:
+      - criteres
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlerteCritere'
+          description: ''
+    put:
+      operationId: criteres_update
+      description: API endpoint pour la gestion des critères d'alerte.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this alerte critere.
+        required: true
+      tags:
+      - criteres
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlerteCritere'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AlerteCritere'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AlerteCritere'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlerteCritere'
+          description: ''
+    patch:
+      operationId: criteres_partial_update
+      description: API endpoint pour la gestion des critères d'alerte.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this alerte critere.
+        required: true
+      tags:
+      - criteres
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAlerteCritere'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAlerteCritere'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAlerteCritere'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlerteCritere'
+          description: ''
+    delete:
+      operationId: criteres_destroy
+      description: API endpoint pour la gestion des critères d'alerte.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this alerte critere.
+        required: true
+      tags:
+      - criteres
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /criteres/{id}/evaluer_patients/:
+    post:
+      operationId: criteres_evaluer_patients_create
+      description: Évalue ce critère d'alerte pour tous les patients et génère des
+        notifications.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this alerte critere.
+        required: true
+      tags:
+      - criteres
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlerteCritere'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AlerteCritere'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AlerteCritere'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlerteCritere'
+          description: ''
+  /etapes/:
+    get:
+      operationId: etapes_list
+      description: API endpoint pour la gestion des étapes de workflow.
+      parameters:
+      - in: query
+        name: type_etape
+        schema:
+          type: string
+          enum:
+          - AUTRE
+          - CONSULTATION
+          - EDUCATION
+          - EXAMEN
+          - TRAITEMENT
+        description: |-
+          * `EXAMEN` - Examen médical
+          * `CONSULTATION` - Consultation
+          * `TRAITEMENT` - Ajustement traitement
+          * `EDUCATION` - Éducation patient
+          * `AUTRE` - Autre action
+      - in: query
+        name: workflow
+        schema:
+          type: integer
+      tags:
+      - etapes
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EtapeWorkflow'
+          description: ''
+    post:
+      operationId: etapes_create
+      description: API endpoint pour la gestion des étapes de workflow.
+      tags:
+      - etapes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EtapeWorkflow'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EtapeWorkflow'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EtapeWorkflow'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapeWorkflow'
+          description: ''
+  /etapes-patient/:
+    get:
+      operationId: etapes_patient_list
+      description: API endpoint pour la gestion des étapes de workflow pour les patients.
+      parameters:
+      - in: query
+        name: patient_workflow
+        schema:
+          type: integer
+      - in: query
+        name: patient_workflow__patient
+        schema:
+          type: integer
+      - in: query
+        name: responsable
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: statut
+        schema:
+          type: string
+          enum:
+          - ANNULEE
+          - EN_COURS
+          - PROGRAMMEE
+          - TERMINEE
+        description: |-
+          * `PROGRAMMEE` - Programmée
+          * `EN_COURS` - En cours
+          * `TERMINEE` - Terminée
+          * `ANNULEE` - Annulée
+      tags:
+      - etapes-patient
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EtapePatient'
+          description: ''
+    post:
+      operationId: etapes_patient_create
+      description: API endpoint pour la gestion des étapes de workflow pour les patients.
+      tags:
+      - etapes-patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EtapePatient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EtapePatient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EtapePatient'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapePatient'
+          description: ''
+  /etapes-patient/{id}/:
+    get:
+      operationId: etapes_patient_retrieve
+      description: API endpoint pour la gestion des étapes de workflow pour les patients.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this etape patient.
+        required: true
+      tags:
+      - etapes-patient
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapePatient'
+          description: ''
+    put:
+      operationId: etapes_patient_update
+      description: API endpoint pour la gestion des étapes de workflow pour les patients.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this etape patient.
+        required: true
+      tags:
+      - etapes-patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EtapePatient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EtapePatient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EtapePatient'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapePatient'
+          description: ''
+    patch:
+      operationId: etapes_patient_partial_update
+      description: API endpoint pour la gestion des étapes de workflow pour les patients.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this etape patient.
+        required: true
+      tags:
+      - etapes-patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEtapePatient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEtapePatient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEtapePatient'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapePatient'
+          description: ''
+    delete:
+      operationId: etapes_patient_destroy
+      description: API endpoint pour la gestion des étapes de workflow pour les patients.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this etape patient.
+        required: true
+      tags:
+      - etapes-patient
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /etapes-patient/{id}/changer_statut/:
+    post:
+      operationId: etapes_patient_changer_statut_create
+      description: Change le statut d'une étape patient.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this etape patient.
+        required: true
+      tags:
+      - etapes-patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EtapePatient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EtapePatient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EtapePatient'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapePatient'
+          description: ''
+  /etapes-patient/prochaines_etapes/:
+    get:
+      operationId: etapes_patient_prochaines_etapes_retrieve
+      description: Récupère les prochaines étapes programmées.
+      tags:
+      - etapes-patient
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapePatient'
+          description: ''
+  /etapes/{id}/:
+    get:
+      operationId: etapes_retrieve
+      description: API endpoint pour la gestion des étapes de workflow.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this etape workflow.
+        required: true
+      tags:
+      - etapes
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapeWorkflow'
+          description: ''
+    put:
+      operationId: etapes_update
+      description: API endpoint pour la gestion des étapes de workflow.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this etape workflow.
+        required: true
+      tags:
+      - etapes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EtapeWorkflow'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EtapeWorkflow'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EtapeWorkflow'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapeWorkflow'
+          description: ''
+    patch:
+      operationId: etapes_partial_update
+      description: API endpoint pour la gestion des étapes de workflow.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this etape workflow.
+        required: true
+      tags:
+      - etapes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEtapeWorkflow'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEtapeWorkflow'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEtapeWorkflow'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapeWorkflow'
+          description: ''
+    delete:
+      operationId: etapes_destroy
+      description: API endpoint pour la gestion des étapes de workflow.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this etape workflow.
+        required: true
+      tags:
+      - etapes
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /examens/:
+    get:
+      operationId: examens_list
+      description: API endpoint pour la gestion des examens.
+      parameters:
+      - in: query
+        name: consultation
+        schema:
+          type: integer
+      - in: query
+        name: consultation__patient
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: urgence
+        schema:
+          type: boolean
+      tags:
+      - examens
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Examen'
+          description: ''
+    post:
+      operationId: examens_create
+      description: API endpoint pour la gestion des examens.
+      tags:
+      - examens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Examen'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Examen'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Examen'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Examen'
+          description: ''
+  /examens/{id}/:
+    get:
+      operationId: examens_retrieve
+      description: API endpoint pour la gestion des examens.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this examen.
+        required: true
+      tags:
+      - examens
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Examen'
+          description: ''
+    put:
+      operationId: examens_update
+      description: API endpoint pour la gestion des examens.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this examen.
+        required: true
+      tags:
+      - examens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Examen'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Examen'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Examen'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Examen'
+          description: ''
+    patch:
+      operationId: examens_partial_update
+      description: API endpoint pour la gestion des examens.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this examen.
+        required: true
+      tags:
+      - examens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedExamen'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedExamen'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedExamen'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Examen'
+          description: ''
+    delete:
+      operationId: examens_destroy
+      description: API endpoint pour la gestion des examens.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this examen.
+        required: true
+      tags:
+      - examens
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /examens/{id}/marquer_realise/:
+    post:
+      operationId: examens_marquer_realise_create
+      description: API endpoint pour la gestion des examens.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this examen.
+        required: true
+      tags:
+      - examens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Examen'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Examen'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Examen'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Examen'
+          description: ''
+  /login/:
+    post:
+      operationId: login_create
+      tags:
+      - login
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /notifications/:
+    get:
+      operationId: notifications_list
+      description: API endpoint pour la gestion des notifications.
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - notifications
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+          description: ''
+    post:
+      operationId: notifications_create
+      description: API endpoint pour la gestion des notifications.
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /notifications/{id}/:
+    get:
+      operationId: notifications_retrieve
+      description: API endpoint pour la gestion des notifications.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - notifications
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+    put:
+      operationId: notifications_update
+      description: API endpoint pour la gestion des notifications.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+    patch:
+      operationId: notifications_partial_update
+      description: API endpoint pour la gestion des notifications.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNotification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNotification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNotification'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+    delete:
+      operationId: notifications_destroy
+      description: API endpoint pour la gestion des notifications.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - notifications
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /notifications/{id}/marquer_lue/:
+    post:
+      operationId: notifications_marquer_lue_create
+      description: API endpoint pour la gestion des notifications.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /notifications/marquer_toutes_lues/:
+    post:
+      operationId: notifications_marquer_toutes_lues_create
+      description: API endpoint pour la gestion des notifications.
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /notifications/non_lues/:
+    get:
+      operationId: notifications_non_lues_retrieve
+      description: API endpoint pour la gestion des notifications.
+      tags:
+      - notifications
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /patients/:
+    get:
+      operationId: patients_list
+      description: API endpoint pour la gestion des patients.
+      parameters:
+      - in: query
+        name: medecin_referent
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: stade_mrc
+        schema:
+          type: integer
+          nullable: true
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+        description: |-
+          * `1` - Stade 1
+          * `2` - Stade 2
+          * `3` - Stade 3
+          * `4` - Stade 4
+          * `5` - Stade 5
+      tags:
+      - patients
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Patient'
+          description: ''
+    post:
+      operationId: patients_create
+      description: API endpoint pour la gestion des patients.
+      tags:
+      - patients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patient'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+  /patients/{id}/:
+    get:
+      operationId: patients_retrieve
+      description: API endpoint pour la gestion des patients.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Patient.
+        required: true
+      tags:
+      - patients
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+    put:
+      operationId: patients_update
+      description: API endpoint pour la gestion des patients.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Patient.
+        required: true
+      tags:
+      - patients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patient'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+    patch:
+      operationId: patients_partial_update
+      description: API endpoint pour la gestion des patients.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Patient.
+        required: true
+      tags:
+      - patients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPatient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPatient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPatient'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+    delete:
+      operationId: patients_destroy
+      description: API endpoint pour la gestion des patients.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Patient.
+        required: true
+      tags:
+      - patients
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /patients/{id}/dashboard/:
+    get:
+      operationId: patients_dashboard_retrieve
+      description: Fournit une vue consolidée pour le tableau de bord d'un patient
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Patient.
+        required: true
+      tags:
+      - patients
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+  /patients/{id}/terminer/:
+    post:
+      operationId: patients_terminer_create
+      description: Marque un workflow patient comme terminé.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this patient workflow.
+        required: true
+      tags:
+      - patients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientWorkflow'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatientWorkflow'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatientWorkflow'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientWorkflow'
+          description: ''
+  /patients/{id}/traitements/:
+    get:
+      operationId: patients_traitements_retrieve
+      description: Récupère tous les traitements d'un patient spécifique.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Patient.
+        required: true
+      tags:
+      - patients
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+  /patients/stats/:
+    get:
+      operationId: patients_stats_retrieve
+      description: Retourne des statistiques sur les patients.
+      tags:
+      - patients
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+  /prescriptions/:
+    get:
+      operationId: prescriptions_list
+      description: API endpoint pour la gestion des prescriptions.
+      parameters:
+      - in: query
+        name: consultation
+        schema:
+          type: integer
+      - in: query
+        name: consultation__patient
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - prescriptions
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prescription'
+          description: ''
+    post:
+      operationId: prescriptions_create
+      description: API endpoint pour la gestion des prescriptions.
+      tags:
+      - prescriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Prescription'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Prescription'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Prescription'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prescription'
+          description: ''
+  /prescriptions/{id}/:
+    get:
+      operationId: prescriptions_retrieve
+      description: API endpoint pour la gestion des prescriptions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this prescription.
+        required: true
+      tags:
+      - prescriptions
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prescription'
+          description: ''
+    put:
+      operationId: prescriptions_update
+      description: API endpoint pour la gestion des prescriptions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this prescription.
+        required: true
+      tags:
+      - prescriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Prescription'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Prescription'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Prescription'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prescription'
+          description: ''
+    patch:
+      operationId: prescriptions_partial_update
+      description: API endpoint pour la gestion des prescriptions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this prescription.
+        required: true
+      tags:
+      - prescriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPrescription'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPrescription'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPrescription'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prescription'
+          description: ''
+    delete:
+      operationId: prescriptions_destroy
+      description: API endpoint pour la gestion des prescriptions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this prescription.
+        required: true
+      tags:
+      - prescriptions
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /prescriptions/{id}/creer_traitement/:
+    post:
+      operationId: prescriptions_creer_traitement_create
+      description: Crée un traitement en cours à partir d'une prescription.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this prescription.
+        required: true
+      tags:
+      - prescriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Prescription'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Prescription'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Prescription'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prescription'
+          description: ''
+  /reglages/:
+    get:
+      operationId: reglages_list
+      description: API endpoint pour la gestion des préférences de notification.
+      tags:
+      - reglages
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReglageNotification'
+          description: ''
+    post:
+      operationId: reglages_create
+      description: Crée ou met à jour les réglages de notification de l'utilisateur.
+      tags:
+      - reglages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReglageNotification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReglageNotification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReglageNotification'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReglageNotification'
+          description: ''
+  /reglages/{id}/:
+    get:
+      operationId: reglages_retrieve
+      description: API endpoint pour la gestion des préférences de notification.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - reglages
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReglageNotification'
+          description: ''
+    put:
+      operationId: reglages_update
+      description: API endpoint pour la gestion des préférences de notification.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - reglages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReglageNotification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReglageNotification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReglageNotification'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReglageNotification'
+          description: ''
+    patch:
+      operationId: reglages_partial_update
+      description: API endpoint pour la gestion des préférences de notification.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - reglages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedReglageNotification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedReglageNotification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedReglageNotification'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReglageNotification'
+          description: ''
+    delete:
+      operationId: reglages_destroy
+      description: API endpoint pour la gestion des préférences de notification.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - reglages
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /rendez-vous/:
+    get:
+      operationId: rendez_vous_list
+      description: API endpoint pour la gestion des rendez-vous.
+      parameters:
+      - in: query
+        name: medecin
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: patient
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: statut
+        schema:
+          type: string
+          enum:
+          - ANNULE
+          - COMPLETE
+          - PLANIFIE
+        description: |-
+          * `PLANIFIE` - Planifié
+          * `ANNULE` - Annulé
+          * `COMPLETE` - Complété
+      tags:
+      - rendez-vous
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConsultationPlanifiee'
+          description: ''
+    post:
+      operationId: rendez_vous_create
+      description: API endpoint pour la gestion des rendez-vous.
+      tags:
+      - rendez-vous
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationPlanifiee'
+          description: ''
+  /rendez-vous/{id}/:
+    get:
+      operationId: rendez_vous_retrieve
+      description: API endpoint pour la gestion des rendez-vous.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this appointment.
+        required: true
+      tags:
+      - rendez-vous
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationPlanifiee'
+          description: ''
+    put:
+      operationId: rendez_vous_update
+      description: API endpoint pour la gestion des rendez-vous.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this appointment.
+        required: true
+      tags:
+      - rendez-vous
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationPlanifiee'
+          description: ''
+    patch:
+      operationId: rendez_vous_partial_update
+      description: API endpoint pour la gestion des rendez-vous.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this appointment.
+        required: true
+      tags:
+      - rendez-vous
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedConsultationPlanifiee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedConsultationPlanifiee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedConsultationPlanifiee'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationPlanifiee'
+          description: ''
+    delete:
+      operationId: rendez_vous_destroy
+      description: API endpoint pour la gestion des rendez-vous.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this appointment.
+        required: true
+      tags:
+      - rendez-vous
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /rendez-vous/{id}/annuler/:
+    post:
+      operationId: rendez_vous_annuler_create
+      description: Annuler un rendez-vous
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this appointment.
+        required: true
+      tags:
+      - rendez-vous
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationPlanifiee'
+          description: ''
+  /rendez-vous/{id}/completer/:
+    post:
+      operationId: rendez_vous_completer_create
+      description: Marquer un rendez-vous comme complété et créer la consultation
+        associée
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this appointment.
+        required: true
+      tags:
+      - rendez-vous
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationPlanifiee'
+          description: ''
+  /rendez-vous/{id}/confirmer/:
+    post:
+      operationId: rendez_vous_confirmer_create
+      description: Confirmer un rendez-vous
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this appointment.
+        required: true
+      tags:
+      - rendez-vous
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConsultationPlanifiee'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultationPlanifiee'
+          description: ''
+  /resultats-examens/:
+    get:
+      operationId: resultats_examens_list
+      description: API endpoint pour la gestion des résultats d'examens.
+      parameters:
+      - in: query
+        name: date_realisation
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: est_anormal
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: patient
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type_examen
+        schema:
+          type: string
+      tags:
+      - resultats-examens
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResultatExamen'
+          description: ''
+    post:
+      operationId: resultats_examens_create
+      description: API endpoint pour la gestion des résultats d'examens.
+      tags:
+      - resultats-examens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResultatExamen'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResultatExamen'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResultatExamen'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultatExamen'
+          description: ''
+  /resultats-examens/{id}/:
+    get:
+      operationId: resultats_examens_retrieve
+      description: API endpoint pour la gestion des résultats d'examens.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this resultat examen.
+        required: true
+      tags:
+      - resultats-examens
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultatExamen'
+          description: ''
+    put:
+      operationId: resultats_examens_update
+      description: API endpoint pour la gestion des résultats d'examens.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this resultat examen.
+        required: true
+      tags:
+      - resultats-examens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResultatExamen'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResultatExamen'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResultatExamen'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultatExamen'
+          description: ''
+    patch:
+      operationId: resultats_examens_partial_update
+      description: API endpoint pour la gestion des résultats d'examens.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this resultat examen.
+        required: true
+      tags:
+      - resultats-examens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedResultatExamen'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedResultatExamen'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedResultatExamen'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultatExamen'
+          description: ''
+    delete:
+      operationId: resultats_examens_destroy
+      description: API endpoint pour la gestion des résultats d'examens.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this resultat examen.
+        required: true
+      tags:
+      - resultats-examens
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /resultats-examens/historique_patient/:
+    get:
+      operationId: resultats_examens_historique_patient_retrieve
+      description: Récupère l'historique des résultats d'examens pour un patient spécifique.
+      tags:
+      - resultats-examens
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultatExamen'
+          description: ''
+  /token/:
+    post:
+      operationId: token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /token/refresh/:
+    post:
+      operationId: token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /traitements/:
+    get:
+      operationId: traitements_list
+      description: API endpoint pour la gestion des traitements.
+      parameters:
+      - in: query
+        name: medicament
+        schema:
+          type: string
+      - in: query
+        name: patient
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - traitements
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TraitementEnCours'
+          description: ''
+    post:
+      operationId: traitements_create
+      description: API endpoint pour la gestion des traitements.
+      tags:
+      - traitements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TraitementEnCours'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TraitementEnCours'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TraitementEnCours'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraitementEnCours'
+          description: ''
+  /traitements/{id}/:
+    get:
+      operationId: traitements_retrieve
+      description: API endpoint pour la gestion des traitements.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this traitement en cours.
+        required: true
+      tags:
+      - traitements
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraitementEnCours'
+          description: ''
+    put:
+      operationId: traitements_update
+      description: API endpoint pour la gestion des traitements.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this traitement en cours.
+        required: true
+      tags:
+      - traitements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TraitementEnCours'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TraitementEnCours'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TraitementEnCours'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraitementEnCours'
+          description: ''
+    patch:
+      operationId: traitements_partial_update
+      description: API endpoint pour la gestion des traitements.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this traitement en cours.
+        required: true
+      tags:
+      - traitements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTraitementEnCours'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTraitementEnCours'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTraitementEnCours'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraitementEnCours'
+          description: ''
+    delete:
+      operationId: traitements_destroy
+      description: API endpoint pour la gestion des traitements.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this traitement en cours.
+        required: true
+      tags:
+      - traitements
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /workflows/:
+    get:
+      operationId: workflows_list
+      description: API endpoint pour la gestion des workflows personnalisés.
+      parameters:
+      - in: query
+        name: actif
+        schema:
+          type: boolean
+      - in: query
+        name: createur
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: stade_mrc
+        schema:
+          type: integer
+          nullable: true
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+        description: |-
+          * `1` - Stade 1
+          * `2` - Stade 2
+          * `3` - Stade 3
+          * `4` - Stade 4
+          * `5` - Stade 5
+      tags:
+      - workflows
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Workflow'
+          description: ''
+    post:
+      operationId: workflows_create
+      description: API endpoint pour la gestion des workflows personnalisés.
+      tags:
+      - workflows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkflowCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkflowCreateUpdate'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowCreateUpdate'
+          description: ''
+  /workflows/{id}/:
+    get:
+      operationId: workflows_retrieve
+      description: API endpoint pour la gestion des workflows personnalisés.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Workflow.
+        required: true
+      tags:
+      - workflows
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workflow'
+          description: ''
+    put:
+      operationId: workflows_update
+      description: API endpoint pour la gestion des workflows personnalisés.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Workflow.
+        required: true
+      tags:
+      - workflows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkflowCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkflowCreateUpdate'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowCreateUpdate'
+          description: ''
+    patch:
+      operationId: workflows_partial_update
+      description: API endpoint pour la gestion des workflows personnalisés.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Workflow.
+        required: true
+      tags:
+      - workflows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkflowCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkflowCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkflowCreateUpdate'
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowCreateUpdate'
+          description: ''
+    delete:
+      operationId: workflows_destroy
+      description: API endpoint pour la gestion des workflows personnalisés.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Workflow.
+        required: true
+      tags:
+      - workflows
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /workflows/{id}/appliquer_patient/:
+    post:
+      operationId: workflows_appliquer_patient_create
+      description: Applique ce workflow à un patient spécifique.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Workflow.
+        required: true
+      tags:
+      - workflows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Workflow'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Workflow'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Workflow'
+        required: true
+      security:
+      - cookieAuth: []
+      - cookieJWTAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workflow'
+          description: ''
+components:
+  schemas:
+    AlerteCritere:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        createur:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        nom:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        type_alerte:
+          $ref: '#/components/schemas/TypeAlerteEnum'
+        seuil_valeur:
+          type: number
+          format: double
+          nullable: true
+          description: Valeur seuil pour les mesures
+        actif:
+          type: boolean
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        patient:
+          type: integer
+      required:
+      - createur
+      - date_creation
+      - description
+      - id
+      - nom
+      - patient
+      - type_alerte
+    Consultation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        medecin:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        medecin_id:
+          type: integer
+          writeOnly: true
+        patient_details:
+          allOf:
+          - $ref: '#/components/schemas/Patient'
+          readOnly: true
+        prescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Prescription'
+          readOnly: true
+        examens:
+          type: array
+          items:
+            $ref: '#/components/schemas/Examen'
+          readOnly: true
+        date:
+          type: string
+          format: date-time
+        type_consultation:
+          $ref: '#/components/schemas/TypeConsultationEnum'
+        symptomes:
+          type: string
+        diagnostic:
+          type: string
+        patient:
+          type: integer
+      required:
+      - date
+      - examens
+      - id
+      - medecin
+      - medecin_id
+      - patient
+      - patient_details
+      - prescriptions
+      - type_consultation
+    ConsultationCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        prescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Prescription'
+        examens:
+          type: array
+          items:
+            $ref: '#/components/schemas/Examen'
+        date:
+          type: string
+          format: date-time
+        type_consultation:
+          $ref: '#/components/schemas/TypeConsultationEnum'
+        symptomes:
+          type: string
+        diagnostic:
+          type: string
+        patient:
+          type: integer
+        medecin:
+          type: integer
+      required:
+      - date
+      - id
+      - medecin
+      - patient
+      - type_consultation
+    ConsultationPlanifiee:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        medecin:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        medecin_id:
+          type: integer
+          writeOnly: true
+        patient_details:
+          allOf:
+          - $ref: '#/components/schemas/Patient'
+          readOnly: true
+        examens_prealables:
+          type: array
+          items:
+            $ref: '#/components/schemas/Examen'
+          readOnly: true
+        date_prevue:
+          type: string
+          format: date-time
+        motif:
+          type: string
+        notes_preparation:
+          type: string
+        statut:
+          $ref: '#/components/schemas/ConsultationPlanifieeStatutEnum'
+        patient:
+          type: integer
+        examen_prealable:
+          type: integer
+          nullable: true
+      required:
+      - date_prevue
+      - examens_prealables
+      - id
+      - medecin
+      - medecin_id
+      - motif
+      - patient
+      - patient_details
+    ConsultationPlanifieeStatutEnum:
+      enum:
+      - PLANIFIE
+      - ANNULE
+      - COMPLETE
+      type: string
+      description: |-
+        * `PLANIFIE` - Planifié
+        * `ANNULE` - Annulé
+        * `COMPLETE` - Complété
+    EtapePatient:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        etape_details:
+          allOf:
+          - $ref: '#/components/schemas/EtapeWorkflow'
+          readOnly: true
+        responsable:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        responsable_id:
+          type: integer
+          writeOnly: true
+        date_prevue:
+          type: string
+          format: date
+        statut:
+          $ref: '#/components/schemas/EtapePatientStatutEnum'
+        date_realisation:
+          type: string
+          format: date
+          nullable: true
+        commentaire:
+          type: string
+        patient_workflow:
+          type: integer
+        etape:
+          type: integer
+      required:
+      - date_prevue
+      - etape
+      - etape_details
+      - id
+      - patient_workflow
+      - responsable
+    EtapePatientStatutEnum:
+      enum:
+      - PROGRAMMEE
+      - EN_COURS
+      - TERMINEE
+      - ANNULEE
+      type: string
+      description: |-
+        * `PROGRAMMEE` - Programmée
+        * `EN_COURS` - En cours
+        * `TERMINEE` - Terminée
+        * `ANNULEE` - Annulée
+    EtapeWorkflow:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nom:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        type_etape:
+          $ref: '#/components/schemas/TypeEtapeEnum'
+        delai_jours:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          description: Délai en jours après l'étape précédente ou le début du workflow
+        periodique:
+          type: boolean
+        periodicite_jours:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+          description: Pour les actions périodiques, intervalle en jours
+        ordre:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        workflow:
+          type: integer
+      required:
+      - delai_jours
+      - description
+      - id
+      - nom
+      - ordre
+      - type_etape
+      - workflow
+    Examen:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type_examen:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        date_realisation:
+          type: string
+          format: date
+        urgence:
+          type: boolean
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        consultation:
+          type: integer
+        resultat:
+          type: integer
+          nullable: true
+      required:
+      - consultation
+      - date_creation
+      - date_realisation
+      - id
+      - type_examen
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        patient_details:
+          allOf:
+          - $ref: '#/components/schemas/Patient'
+          readOnly: true
+        titre:
+          type: string
+          maxLength: 200
+        message:
+          type: string
+        type_notification:
+          $ref: '#/components/schemas/TypeNotificationEnum'
+        date_lecture:
+          type: string
+          format: date-time
+          nullable: true
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        date_expiration:
+          type: string
+          format: date-time
+          nullable: true
+        patient:
+          type: integer
+          nullable: true
+        destinataire:
+          type: integer
+        critere_alerte:
+          type: integer
+          readOnly: true
+          nullable: true
+      required:
+      - critere_alerte
+      - date_creation
+      - destinataire
+      - id
+      - message
+      - patient_details
+      - titre
+      - type_notification
+    NullEnum:
+      enum:
+      - null
+    PatchedAlerteCritere:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        createur:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        nom:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        type_alerte:
+          $ref: '#/components/schemas/TypeAlerteEnum'
+        seuil_valeur:
+          type: number
+          format: double
+          nullable: true
+          description: Valeur seuil pour les mesures
+        actif:
+          type: boolean
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        patient:
+          type: integer
+    PatchedConsultationCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        prescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Prescription'
+        examens:
+          type: array
+          items:
+            $ref: '#/components/schemas/Examen'
+        date:
+          type: string
+          format: date-time
+        type_consultation:
+          $ref: '#/components/schemas/TypeConsultationEnum'
+        symptomes:
+          type: string
+        diagnostic:
+          type: string
+        patient:
+          type: integer
+        medecin:
+          type: integer
+    PatchedConsultationPlanifiee:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        medecin:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        medecin_id:
+          type: integer
+          writeOnly: true
+        patient_details:
+          allOf:
+          - $ref: '#/components/schemas/Patient'
+          readOnly: true
+        examens_prealables:
+          type: array
+          items:
+            $ref: '#/components/schemas/Examen'
+          readOnly: true
+        date_prevue:
+          type: string
+          format: date-time
+        motif:
+          type: string
+        notes_preparation:
+          type: string
+        statut:
+          $ref: '#/components/schemas/ConsultationPlanifieeStatutEnum'
+        patient:
+          type: integer
+        examen_prealable:
+          type: integer
+          nullable: true
+    PatchedEtapePatient:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        etape_details:
+          allOf:
+          - $ref: '#/components/schemas/EtapeWorkflow'
+          readOnly: true
+        responsable:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        responsable_id:
+          type: integer
+          writeOnly: true
+        date_prevue:
+          type: string
+          format: date
+        statut:
+          $ref: '#/components/schemas/EtapePatientStatutEnum'
+        date_realisation:
+          type: string
+          format: date
+          nullable: true
+        commentaire:
+          type: string
+        patient_workflow:
+          type: integer
+        etape:
+          type: integer
+    PatchedEtapeWorkflow:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nom:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        type_etape:
+          $ref: '#/components/schemas/TypeEtapeEnum'
+        delai_jours:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          description: Délai en jours après l'étape précédente ou le début du workflow
+        periodique:
+          type: boolean
+        periodicite_jours:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+          description: Pour les actions périodiques, intervalle en jours
+        ordre:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        workflow:
+          type: integer
+    PatchedExamen:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type_examen:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        date_realisation:
+          type: string
+          format: date
+        urgence:
+          type: boolean
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        consultation:
+          type: integer
+        resultat:
+          type: integer
+          nullable: true
+    PatchedNotification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        patient_details:
+          allOf:
+          - $ref: '#/components/schemas/Patient'
+          readOnly: true
+        titre:
+          type: string
+          maxLength: 200
+        message:
+          type: string
+        type_notification:
+          $ref: '#/components/schemas/TypeNotificationEnum'
+        date_lecture:
+          type: string
+          format: date-time
+          nullable: true
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        date_expiration:
+          type: string
+          format: date-time
+          nullable: true
+        patient:
+          type: integer
+          nullable: true
+        destinataire:
+          type: integer
+        critere_alerte:
+          type: integer
+          readOnly: true
+          nullable: true
+    PatchedPatient:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        medecin_referent:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        numero_dossier:
+          type: string
+        nom:
+          type: string
+          maxLength: 100
+        prenom:
+          type: string
+          maxLength: 100
+        date_naissance:
+          type: string
+          format: date
+        sexe:
+          $ref: '#/components/schemas/SexeEnum'
+        adresse:
+          type: string
+        telephone:
+          type: string
+          maxLength: 15
+        email:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 254
+        stade_mrc:
+          nullable: true
+          minimum: -9223372036854775808
+          maximum: 9223372036854775807
+          oneOf:
+          - $ref: '#/components/schemas/StadeMrcEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        dfu:
+          type: number
+          format: double
+          nullable: true
+          title: Débit de Filtration Urinaire
+        antecedents_medicaux:
+          type: string
+          nullable: true
+        allergies:
+          type: string
+          nullable: true
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        date_modification:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedPrescription:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        medicament:
+          type: string
+          maxLength: 200
+        posologie:
+          type: string
+          maxLength: 200
+        duree_traitement:
+          type: integer
+          maximum: 3650
+          minimum: 1
+        instructions:
+          type: string
+        est_convertie:
+          type: boolean
+        date_conversion:
+          type: string
+          format: date-time
+          nullable: true
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        consultation:
+          type: integer
+    PatchedReglageNotification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        utilisateur:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        recevoir_alertes:
+          type: boolean
+        recevoir_rdv:
+          type: boolean
+        email_actif:
+          type: boolean
+        date_modification:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedResultatExamen:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        ajoute_par:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        type_examen:
+          type: string
+          maxLength: 200
+        date_realisation:
+          type: string
+          format: date
+        laboratoire:
+          type: string
+          maxLength: 200
+        resultats_texte:
+          type: string
+        fichier_resultats:
+          type: string
+          format: uri
+          nullable: true
+        creatinine:
+          type: number
+          format: double
+          nullable: true
+        dfu:
+          type: number
+          format: double
+          nullable: true
+          title: Débit de Filtration Urinaire
+        proteinurie:
+          type: number
+          format: double
+          nullable: true
+        interpretation:
+          type: string
+          description: Interprétation médicale des résultats
+        est_anormal:
+          type: boolean
+        date_ajout:
+          type: string
+          format: date-time
+          readOnly: true
+        patient:
+          type: integer
+        examen_prescrit:
+          type: integer
+          nullable: true
+    PatchedTraitementEnCours:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        prescripteur:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        prescripteur_id:
+          type: integer
+          writeOnly: true
+        prescription_origine_id:
+          type: integer
+          writeOnly: true
+        medicament:
+          type: string
+          maxLength: 200
+        posologie:
+          type: string
+          maxLength: 200
+        date_debut:
+          type: string
+          format: date
+        date_fin:
+          type: string
+          format: date
+          nullable: true
+        commentaire:
+          type: string
+          nullable: true
+        est_actif:
+          type: boolean
+        date_modification:
+          type: string
+          format: date-time
+          readOnly: true
+        patient:
+          type: integer
+        prescription_origine:
+          type: integer
+          nullable: true
+        traitement_precedent:
+          type: integer
+          nullable: true
+    PatchedWorkflowCreateUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        etapes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EtapeWorkflow'
+        nom:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        stade_mrc:
+          nullable: true
+          minimum: -9223372036854775808
+          maximum: 9223372036854775807
+          oneOf:
+          - $ref: '#/components/schemas/StadeMrcEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        actif:
+          type: boolean
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        date_modification:
+          type: string
+          format: date-time
+          readOnly: true
+        createur:
+          type: integer
+    Patient:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        medecin_referent:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        numero_dossier:
+          type: string
+        nom:
+          type: string
+          maxLength: 100
+        prenom:
+          type: string
+          maxLength: 100
+        date_naissance:
+          type: string
+          format: date
+        sexe:
+          $ref: '#/components/schemas/SexeEnum'
+        adresse:
+          type: string
+        telephone:
+          type: string
+          maxLength: 15
+        email:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 254
+        stade_mrc:
+          nullable: true
+          minimum: -9223372036854775808
+          maximum: 9223372036854775807
+          oneOf:
+          - $ref: '#/components/schemas/StadeMrcEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        dfu:
+          type: number
+          format: double
+          nullable: true
+          title: Débit de Filtration Urinaire
+        antecedents_medicaux:
+          type: string
+          nullable: true
+        allergies:
+          type: string
+          nullable: true
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        date_modification:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - adresse
+      - date_creation
+      - date_modification
+      - date_naissance
+      - id
+      - medecin_referent
+      - nom
+      - prenom
+      - sexe
+      - telephone
+    PatientWorkflow:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        patient_details:
+          allOf:
+          - $ref: '#/components/schemas/Patient'
+          readOnly: true
+        workflow_details:
+          allOf:
+          - $ref: '#/components/schemas/Workflow'
+          readOnly: true
+        etapes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EtapePatient'
+          readOnly: true
+        date_debut:
+          type: string
+          format: date
+        date_fin:
+          type: string
+          format: date
+          nullable: true
+        notes:
+          type: string
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        patient:
+          type: integer
+        workflow:
+          type: integer
+      required:
+      - date_creation
+      - date_debut
+      - etapes
+      - id
+      - patient
+      - patient_details
+      - workflow
+      - workflow_details
+    Prescription:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        medicament:
+          type: string
+          maxLength: 200
+        posologie:
+          type: string
+          maxLength: 200
+        duree_traitement:
+          type: integer
+          maximum: 3650
+          minimum: 1
+        instructions:
+          type: string
+        est_convertie:
+          type: boolean
+        date_conversion:
+          type: string
+          format: date-time
+          nullable: true
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        consultation:
+          type: integer
+      required:
+      - consultation
+      - date_creation
+      - duree_traitement
+      - id
+      - medicament
+      - posologie
+    ReglageNotification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        utilisateur:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        recevoir_alertes:
+          type: boolean
+        recevoir_rdv:
+          type: boolean
+        email_actif:
+          type: boolean
+        date_modification:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_modification
+      - id
+      - utilisateur
+    ResultatExamen:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        ajoute_par:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        type_examen:
+          type: string
+          maxLength: 200
+        date_realisation:
+          type: string
+          format: date
+        laboratoire:
+          type: string
+          maxLength: 200
+        resultats_texte:
+          type: string
+        fichier_resultats:
+          type: string
+          format: uri
+          nullable: true
+        creatinine:
+          type: number
+          format: double
+          nullable: true
+        dfu:
+          type: number
+          format: double
+          nullable: true
+          title: Débit de Filtration Urinaire
+        proteinurie:
+          type: number
+          format: double
+          nullable: true
+        interpretation:
+          type: string
+          description: Interprétation médicale des résultats
+        est_anormal:
+          type: boolean
+        date_ajout:
+          type: string
+          format: date-time
+          readOnly: true
+        patient:
+          type: integer
+        examen_prescrit:
+          type: integer
+          nullable: true
+      required:
+      - ajoute_par
+      - date_ajout
+      - date_realisation
+      - id
+      - patient
+      - type_examen
+    SexeEnum:
+      enum:
+      - M
+      - F
+      - A
+      type: string
+      description: |-
+        * `M` - Masculin
+        * `F` - Féminin
+        * `A` - Autre
+    StadeMrcEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      type: integer
+      description: |-
+        * `1` - Stade 1
+        * `2` - Stade 2
+        * `3` - Stade 3
+        * `4` - Stade 4
+        * `5` - Stade 5
+    TokenObtainPair:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - email
+      - password
+      - refresh
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    TraitementEnCours:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        prescripteur:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        prescripteur_id:
+          type: integer
+          writeOnly: true
+        prescription_origine_id:
+          type: integer
+          writeOnly: true
+        medicament:
+          type: string
+          maxLength: 200
+        posologie:
+          type: string
+          maxLength: 200
+        date_debut:
+          type: string
+          format: date
+        date_fin:
+          type: string
+          format: date
+          nullable: true
+        commentaire:
+          type: string
+          nullable: true
+        est_actif:
+          type: boolean
+        date_modification:
+          type: string
+          format: date-time
+          readOnly: true
+        patient:
+          type: integer
+        prescription_origine:
+          type: integer
+          nullable: true
+        traitement_precedent:
+          type: integer
+          nullable: true
+      required:
+      - date_debut
+      - date_modification
+      - id
+      - medicament
+      - patient
+      - posologie
+      - prescripteur
+    TypeAlerteEnum:
+      enum:
+      - DFU
+      - CREATININE
+      - EXAMEN
+      type: string
+      description: |-
+        * `DFU` - DFU en dessous du seuil
+        * `CREATININE` - Créatinine au-dessus du seuil
+        * `EXAMEN` - Résultat d'examen anormal
+    TypeConsultationEnum:
+      enum:
+      - INITIALE
+      - SUIVI
+      - URGENCE
+      type: string
+      description: |-
+        * `INITIALE` - Consultation initiale
+        * `SUIVI` - Consultation de suivi
+        * `URGENCE` - Consultation d'urgence
+    TypeEtapeEnum:
+      enum:
+      - EXAMEN
+      - CONSULTATION
+      - TRAITEMENT
+      - EDUCATION
+      - AUTRE
+      type: string
+      description: |-
+        * `EXAMEN` - Examen médical
+        * `CONSULTATION` - Consultation
+        * `TRAITEMENT` - Ajustement traitement
+        * `EDUCATION` - Éducation patient
+        * `AUTRE` - Autre action
+    TypeNotificationEnum:
+      enum:
+      - ALERTE
+      - RENDEZ_VOUS
+      type: string
+      description: |-
+        * `ALERTE` - Alerte clinique
+        * `RENDEZ_VOUS` - Rappel de rendez-vous
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+      required:
+      - email
+      - id
+    Workflow:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        etapes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EtapeWorkflow'
+          readOnly: true
+        createur:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        nom:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        stade_mrc:
+          nullable: true
+          minimum: -9223372036854775808
+          maximum: 9223372036854775807
+          oneOf:
+          - $ref: '#/components/schemas/StadeMrcEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        actif:
+          type: boolean
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        date_modification:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - createur
+      - date_creation
+      - date_modification
+      - description
+      - etapes
+      - id
+      - nom
+    WorkflowCreateUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        etapes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EtapeWorkflow'
+        nom:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        stade_mrc:
+          nullable: true
+          minimum: -9223372036854775808
+          maximum: 9223372036854775807
+          oneOf:
+          - $ref: '#/components/schemas/StadeMrcEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        actif:
+          type: boolean
+        date_creation:
+          type: string
+          format: date-time
+          readOnly: true
+        date_modification:
+          type: string
+          format: date-time
+          readOnly: true
+        createur:
+          type: integer
+      required:
+      - createur
+      - date_creation
+      - date_modification
+      - description
+      - etapes
+      - id
+      - nom
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    cookieJWTAuth:
+      type: apiKey
+      scheme: cookie
+      bearerFormat: access_token
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
