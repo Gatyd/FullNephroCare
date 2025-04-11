@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-f5o2a&hvxz--n#^7nq0_za^!%^jzl)68hm*c_9rjr(_)(c-t3d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://fullnaphrocare.onrender.com"]
 
 
 # Application definition
@@ -191,8 +191,8 @@ SIMPLE_JWT = {
 
 # Configuration CORS
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "https://nephro-care.vercel.app",
+    "https://fullnaphrocare.onrender.com",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
