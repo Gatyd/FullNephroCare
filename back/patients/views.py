@@ -120,7 +120,11 @@ class ResultatExamenViewSet(viewsets.ModelViewSet):
         if resultat.est_anormal:
             Notification.objects.create(
                 titre=f"Anomalie dans les résultats d'examens de {resultat.patient.nom}",
-                message=f"Le résultat {resultat.type_examen} est anormal avec un débit de filtrage urinaire égale à {resultat.dfu} mL / min / 1,73m², une creatinine égale à {resultat.creatinine}, et une protéinurie d'une valeur de {resultat.proteinurie}.{' Cela s\'interprète comme {resultat.interpretation}' if resultat.interpretation else ''}",
+                message=(
+                    f"Le résultat {resultat.type_examen} est anormal avec un débit de filtrage urinaire égale à {resultat.dfu} mL / min / 1,73m², "
+                    f"une creatinine égale à {resultat.creatinine}, et une protéinurie d'une valeur de {resultat.proteinurie}."
+                    f"{f' Cela s’interprète comme {resultat.interpretation}' if resultat.interpretation else ''}"
+                ),
                 type_notification='ALERTE',
                 patient=resultat.patient,
                 destinataire=resultat.patient.medecin_referent
