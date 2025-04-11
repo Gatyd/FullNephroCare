@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -89,7 +88,14 @@ WSGI_APPLICATION = 'mrc_platform.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600)
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get('NAME', 'name'),
+        "USER": os.environ.get('USER', 'user'),
+        "PASSWORD": os.environ.get('PASSWORD', 'password'),
+        "HOST": os.environ.get('HOST', 'host'),
+        "PORT": os.environ.get('PORT', 'port'),
+    }
 }
 
 
