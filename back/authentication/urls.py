@@ -9,5 +9,6 @@ urlpatterns = [
     path('login/',LoginUser.as_view()),
     path('user/',GetUserView.as_view()),
     path('refresh/',RefreshTokenView.as_view()),
+    path('logout/',LogoutUser.as_view()),
     path('', include(router.urls)),
 ]

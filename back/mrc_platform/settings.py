@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import dj_database_url
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f5o2a&hvxz--n#^7nq0_za^!%^jzl)68hm*c_9rjr(_)(c-t3d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ["https://fullnaphrocare.onrender.com", "fullnaphrocare.onrender.com"]
+ALLOWED_HOSTS = ["nephro-care-back.onrender.com", "localhost"]
 
 
 # Application definition
@@ -89,12 +90,10 @@ WSGI_APPLICATION = 'mrc_platform.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get('NAME', 'name'),
-        "USER": os.environ.get('USER', 'user'),
-        "PASSWORD": os.environ.get('PASSWORD', 'password'),
-        "HOST": os.environ.get('HOST', 'host'),
-        "PORT": os.environ.get('DB_PORT', 'port'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
+    } if DEBUG else {
+        'default': dj_database_url.config(conn_max_age=600)
     }
 }
 
@@ -103,18 +102,18 @@ DATABASES = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 
@@ -135,7 +134,7 @@ USE_TZ = True
 
 # STATIC_URL = 'static/'
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -192,7 +191,8 @@ SIMPLE_JWT = {
 # Configuration CORS
 CORS_ALLOWED_ORIGINS = [
     "https://nephro-care.vercel.app",
-    "https://fullnaphrocare.onrender.com",
+    "http://localhost:3000",
+    "https://nephro-care-back.onrender.com"
 ]
 CORS_ALLOW_CREDENTIALS = True
 

@@ -31,7 +31,7 @@ onMounted(() => {
 })
 </script>
 <template>
-    <UFormField label="Patient" name="patient_id" :required="true" class="xl:col-span-6">
+    <UFormField  v-bind="$attrs" label="Patient" name="patient" :required="true">
         <USelect v-model="model" placeholder="Sélectionner un patient" :loading="loading" :clearable="true"
         :items="patients" value-key="id" label-key="label" class="w-full  xl:col-span-6" />
     </UFormField>

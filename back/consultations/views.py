@@ -19,16 +19,17 @@ class ConsultationViewSet(viewsets.ModelViewSet):
     API endpoint pour la gestion des consultations.
     """
     queryset = Consultation.objects.all()
+    serializer_class = ConsultationCreateSerializer
     permission_classes = [IsProfessionnelSante]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['patient', 'medecin', 'type_consultation']
     search_fields = ['motif', 'diagnostic', 'patient__nom', 'patient__prenom']
     ordering_fields = ['date', 'date_creation']
 
-    def get_serializer_class(self):
-        if self.action in ['create', 'update', 'partial_update']:
-            return ConsultationCreateSerializer
-        return ConsultationSerializer
+    # def get_serializer_class(self):
+    #     if self.action in ['create', 'update', 'partial_update']:
+    #         return ConsultationCreateSerializer
+    #     return ConsultationSerializer
 
     @action(detail=True, methods=['post'])
     def add_prescription(self, request, pk=None):

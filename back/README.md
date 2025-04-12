@@ -11,15 +11,20 @@ Pour travailler ou utiliser ce référentiel, suivez les étapes ci-dessous :
 python -m venv env
 ``` 
 
-3. Installer Django et les dépendances du projet:
+3. Activer l'environnement virtuel
+```bash
+env\Scripts\activate
+```
+
+4. Installer Django et les dépendances du projet:
 ```bash
 pip install -r requirements.txt
 ```
  
-4. Demarrer le serveur d'application django:
+5. Demarrer le serveur d'application django:
 ```bash
 python manage.py runserver
 ```
  
-5. Accéder à la documentation de l'API pour tester directement pendant le développement:
+6. Accéder à la documentation de l'API:
 [http://localhost:8000/docs/](http://localhost:8000/docs/)

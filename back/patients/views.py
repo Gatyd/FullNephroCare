@@ -23,7 +23,7 @@ class PatientViewSet(viewsets.ModelViewSet):
     """
     API endpoint pour la gestion des patients.
     """
-    queryset = Patient.objects.all()
+    queryset = Patient.objects.all().order_by('-date_modification')
     serializer_class = PatientSerializer
     permission_classes = [IsProfessionnelSante]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]

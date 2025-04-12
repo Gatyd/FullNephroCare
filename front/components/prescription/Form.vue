@@ -32,10 +32,6 @@ const validate = (state: any): FormError[] => {
   if (!state.medicament) errors.push({ name: 'medicament', message: 'Veuillez entrer le nom du médicament' });
   if (!state.posologie) errors.push({ name: 'posologie', message: 'Veuillez entrer la posologie' });
   if (!state.duree_traitement) errors.push({ name: 'duree_traitement', message: 'Veuillez entrer la durée du traitement' });
-  if (!state.date_conversion) errors.push({ name: 'date_conversion', message: 'Veuillez entrer la date de conversion' })
-    else if (!/^\d{4}-\d{2}-\d{2}$/.test(state.date_conversion)) {
-        errors.push({ name: 'date_conversion', message: 'Veuillez entrer une date valide' })
-    } 
   return errors;
 };
 
@@ -57,6 +53,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
   body.instructions = body.instructions === '' ? null : body.instructions;
   body.consultation = body.consultation === 0 ? null : body.consultation;
   body['patient'] = body.patient === 0 ? null : body.patient
+  body.date_conversion = body.date_conversion === '' ? null : body.date_conversion;
   body.est_convertie = body.est_convertie ? 1 : 0;
 
   const res = await apiRequest<Prescription>(
@@ -119,7 +116,7 @@ watch(() => model.value, async() => {
       <template #body>
         <UForm :state="state" :validate="validate" @submit="onSubmit">
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-6">
-            <PatientSelectMenu v-model="state.patient" />
+            <PatientSelectMenu class="xl:col-span-6" v-model="state.patient" />
   
             <UFormField class="xl:col-span-6" label="Médicament" name="medicament" required>
               <UInput v-model="state.medicament" class="w-full" />
@@ -133,7 +130,7 @@ watch(() => model.value, async() => {
               <UInput v-model="state.duree_traitement" type="number" min="1" class="w-full" />
             </UFormField>
             
-            <UFormField class="xl:col-span-12 my-1" label="Date de conversion" name="date_conversion" required>
+            <UFormField class="xl:col-span-12 my-1" label="Date de conversion" name="date_conversion">
               <UInput v-model="state.date_conversion" type="date" class="w-full" />
             </UFormField>
             <UFormField class="xl:col-span-12" label="Instructions supplémentaires" name="instructions">

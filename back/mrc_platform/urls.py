@@ -11,7 +11,7 @@ from rest_framework.permissions import AllowAny
 class PublicSwaggerView(SpectacularSwaggerView):
     permission_classes = [AllowAny]
 
-admin.site.login = login_required(admin.site.login)
+# admin.site.login = login_required(admin.site.login)
 
 urlpatterns = [
 

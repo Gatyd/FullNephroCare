@@ -15,12 +15,12 @@ class Consultation(models.Model):
 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='consultations')
     medecin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='consultations_effectuees')
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True)
     type_consultation = models.CharField(max_length=10, choices=TYPE_CHOICES)
 
     # motif = models.TextField()
     symptomes = models.TextField(blank=True)
-    diagnostic = models.TextField(blank=True)
+    diagnostic = models.TextField(blank=True, null=True)
     # recommandations = models.TextField(blank=True)
 
     def __str__(self):
@@ -60,7 +60,7 @@ class Examen(models.Model):
     consultation = models.ForeignKey(Consultation, on_delete=models.CASCADE, related_name='examens')
     type_examen = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
-    date_realisation = models.DateField() # date_prescrite => date_realisation ça revient à la date où l'examen doit être réalisé
+    date_realisation = models.DateTimeField() # date_prescrite => date_realisation ça revient à la date où l'examen doit être réalisé
     urgence = models.BooleanField(default=False)
 
     # Suivi de l'examen

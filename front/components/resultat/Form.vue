@@ -3,19 +3,19 @@ import type { ResultatExamen } from '~/types';
 import type { FormError, FormSubmitEvent } from '@nuxt/ui';
 
 const props = defineProps({
-    resultat: {
-        type: Object as PropType<ResultatExamen>,
-        required: false,
-    },
-    essai:{
-        type: String,
-        required:false,
-    }
+  resultat: {
+    type: Object as PropType<ResultatExamen>,
+    required: false,
+  },
+  essai: {
+    type: String,
+    required: false,
+  }
 
 });
 
 const model = defineModel({
-    type: Boolean
+  type: Boolean
 });
 
 const emit = defineEmits(['create', 'update']);
@@ -29,7 +29,7 @@ const state = reactive({
   date_realisation: "",
   laboratoire: "",
   resultats_texte: "",
-  fichier_resultats: "",
+  fichier: "",
   creatinine: 0,
   dfu: 0,
   proteinurie: 0,
@@ -77,7 +77,7 @@ function resetForm() {
   state.date_realisation = "";
   state.laboratoire = "";
   state.resultats_texte = "";
-  state.fichier_resultats = "";
+  state.fichier = "";
   state.creatinine = 0;
   state.dfu = 0;
   state.proteinurie = 0;
@@ -98,7 +98,6 @@ async function onSubmit(event: FormSubmitEvent<any>) {
   body['examen_prescrit'] = body.examen_prescrit || null;
   body['laboratoire'] = body.laboratoire || null;
   body['resultats_texte'] = body.resultats_texte || null;
-  body['fichier_resultats'] = body.fichier_resultats || null;
   body['creatinine'] = body.creatinine === null || body.creatinine === '' ? null : body.creatinine;
   body['dfu'] = body.dfu === null || body.dfu === '' ? null : body.dfu;
   body['proteinurie'] = body.proteinurie === null || body.proteinurie === '' ? null : body.proteinurie;
@@ -141,7 +140,6 @@ watch(() => model.value, () => {
     state.date_realisation = props.resultat.date_realisation;
     state.laboratoire = props.resultat.laboratoire ?? "";
     state.resultats_texte = props.resultat.resultats_texte ?? "";
-    state.fichier_resultats = props.resultat.fichier_resultats ?? "";
     state.creatinine = props.resultat.creatinine ?? 0;
     state.dfu = props.resultat.dfu ?? 0;
     state.proteinurie = props.resultat.proteinurie ?? 0;
@@ -154,69 +152,63 @@ watch(() => model.value, () => {
   }
 });
 
-
-
-
 </script>
 
 <template>
-    <UModal
-      v-model:open="model"
-      :title="props.resultat ? 'Modifier un résultat' : 'Ajouter un résultat'"
-      :description="props.resultat ? 'Modifiez les informations du résultat' : 'Remplissez les informations du résultat'"
-    >
-      <template #body>
-        <UForm :state="state" :validate="validate" @submit="onSubmit">
-          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-6">
-            <PatientSelectMenu v-model="state.patient" />
-  
-            <UFormField class="xl:col-span-6" label="Type d'examen" name="type_examen" required>
-              <UInput v-model="state.type_examen" class="w-full" />
-            </UFormField>
-  
-            <UFormField class="xl:col-span-6" label="Date de réalisation" name="date_realisation" required>
-              <UInput v-model="state.date_realisation" type="date" class="w-full" />
-            </UFormField>
-  
-            <UFormField class="xl:col-span-6" label="Laboratoire" name="laboratoire">
-              <UInput v-model="state.laboratoire" class="w-full" />
-            </UFormField>
-  
-            <UFormField class="xl:col-span-6" label="Fichier des résultats" name="fichier_resultats">
-              <UInput v-model="state.fichier_resultats" type="text" class="w-full" />
-            </UFormField>
-  
-            <UFormField class="xl:col-span-12" label="Résultats (texte)" name="resultats_texte">
-              <UTextarea v-model="state.resultats_texte" :rows="4" class="w-full" />
-            </UFormField>
-  
-            <UFormField class="xl:col-span-4" label="Créatinine" name="creatinine">
-              <UInput v-model="state.creatinine" type="number" class="w-full" />
-            </UFormField>
-  
-            <UFormField class="xl:col-span-4" label="DFU" name="dfu">
-              <UInput v-model="state.dfu" type="number" class="w-full" />
-            </UFormField>
-  
-            <UFormField class="xl:col-span-4" label="Protéinurie" name="proteinurie">
-              <UInput v-model="state.proteinurie" type="number" class="w-full" />
-            </UFormField>
-  
-            <UFormField class="xl:col-span-12" label="Interpretation" name="interpretation">
-              <UTextarea v-model="state.interpretation" :rows="3" class="w-full" />
-            </UFormField>
-  
-            <UFormField class="xl:col-span-12" label="Est anormal" name="est_anormal">
-              <UCheckbox v-model="state.est_anormal" label="Résultat anormal" />
-            </UFormField>
-          </div>
-  
-          <div class="mt-8 flex justify-center items-center gap-8">
-            <UButton label="Annuler" color="neutral" @click="model = false" />
-            <UButton label="Enregistrer" :loading="loading" type="submit" color="success" />
-          </div>
-        </UForm>
-      </template>
-    </UModal>
-  </template>
-  
+  <UModal v-model:open="model" :ui="{ content: 'max-w-4xl' }"
+    :title="props.resultat ? 'Modifier un résultat' : 'Ajouter un résultat'"
+    :description="props.resultat ? 'Modifiez les informations du résultat' : 'Remplissez les informations du résultat'">
+    <template #body>
+      <UForm :state="state" :validate="validate" @submit="onSubmit">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-6">
+          <PatientSelectMenu class="xl:col-span-4" v-model="state.patient" />
+
+          <UFormField class="xl:col-span-4" label="Type d'examen" name="type_examen" required>
+            <UInput v-model="state.type_examen" class="w-full" />
+          </UFormField>
+
+          <UFormField class="xl:col-span-4" label="Date de réalisation" name="date_realisation" required>
+            <UInput v-model="state.date_realisation" type="date" class="w-full" />
+          </UFormField>
+
+          <UFormField class="xl:col-span-4" label="Laboratoire" name="laboratoire">
+            <UInput v-model="state.laboratoire" class="w-full" />
+          </UFormField>
+
+          <UFormField class="xl:col-span-4" label="Fichier des résultats" name="fichier_resultats">
+            <UInput v-model="state.fichier" type="file" class="w-full" />
+          </UFormField>
+
+          <UFormField class="xl:col-span-4 place-self-center" name="est_anormal">
+            <UCheckbox v-model="state.est_anormal" label="Résultat anormal" />
+          </UFormField>
+
+          <UFormField class="xl:col-span-4" label="Créatinine" name="creatinine">
+            <UInput v-model="state.creatinine" type="number" class="w-full" />
+          </UFormField>
+
+          <UFormField class="xl:col-span-4" label="DFU" name="dfu">
+            <UInput v-model="state.dfu" type="number" class="w-full" />
+          </UFormField>
+
+          <UFormField class="xl:col-span-4" label="Protéinurie" name="proteinurie">
+            <UInput v-model="state.proteinurie" type="number" class="w-full" />
+          </UFormField>
+
+          <UFormField class="xl:col-span-6" label="Résultats (texte)" name="resultats_texte">
+            <UTextarea v-model="state.resultats_texte" :rows="4" class="w-full" />
+          </UFormField>
+
+          <UFormField class="xl:col-span-6" label="Interpretation" name="interpretation">
+            <UTextarea v-model="state.interpretation" :rows="4" class="w-full" />
+          </UFormField>
+        </div>
+
+        <div class="mt-8 flex justify-center items-center gap-8">
+          <UButton label="Annuler" color="neutral" @click="model = false" />
+          <UButton label="Enregistrer" :loading="loading" type="submit" color="success" />
+        </div>
+      </UForm>
+    </template>
+  </UModal>
+</template>

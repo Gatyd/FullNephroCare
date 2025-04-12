@@ -103,11 +103,13 @@ class Notification(models.Model):
     def __str__(self):
         return f"{self.titre} - {self.destinataire.username}"
     
-    def save(self, force_insert = ..., force_update = ..., using = ..., update_fields = ...):
-        # Expire 3 days after creation
-        if not self.date_expiration:
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+
+        if is_new and not self.date_expiration:
             self.date_expiration = self.date_creation + timedelta(days=3)
-        super().save(force_insert, force_update, using, update_fields)
+            super().save(update_fields=["date_expiration"])
 
 
 class ReglageNotification(models.Model):

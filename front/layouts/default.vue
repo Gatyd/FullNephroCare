@@ -130,7 +130,7 @@ provide('showToast', showToast)
 </script>
 
 <template>
-
+    <LogoutModal v-model="logoutModal" />
     <UDashboardGroup>
             <UDashboardSidebar collapsible resizable :min-size="14" :default-size="17.5" :max-size="21" :ui="{
                 footer: 'block border-t border-(--ui-border)',

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Examen } from '~/types';
+import type { Consultation, Examen } from '~/types';
 import type { FormError, FormSubmitEvent } from '@nuxt/ui';
 
 const props = defineProps({
@@ -38,9 +38,10 @@ const validate = (state: any): FormError[] => {
     if (!state.type_examen) errors.push({ name: 'type_examen', message: 'Veuillez entrer le type d\'examen ' })
     if (!state.patient) errors.push({ name: 'patient', message: 'Veuillez sélectionner le patient ' })
     if (!state.date_realisation) errors.push({ name: 'date_realisation', message: 'Veuillez entrer la date de realisation' })
-    else if (!/^\d{4}-\d{2}-\d{2}$/.test(state.date_realisation)) {
-        errors.push({ name: 'date_realisation', message: 'Veuillez entrer une date valide' })
-    }    return errors
+    else if (new Date(state.date_realisation) < new Date()) {
+        errors.push({ name: 'date_realisation', message: 'La date de réalisation ne peut pas être dans le passé' })
+    }
+    return errors
 }
 function resetForm() {
     state.patient = 0;
@@ -91,22 +92,12 @@ watch(() => model.value, async () => {
   const examen = props.examen;
 
   if (examen) {
-    try {
-      const { patient } = await $fetch(`/api/consultations/${examen.consultation}`, {
-        credentials: 'include'
-      });
-      state.patient = patient;
-    } catch (error) {
-      console.error("Impossible de récupérer l'examen avec patient", error);
-      state.patient = 0;
-    }
-
+    state.patient = (examen.consultation as Consultation).patient.id;
     state.type_examen = examen.type_examen;
     state.description = examen.description ?? "";
     state.date_realisation = examen.date_realisation;
     state.urgence = examen.urgence;
     state.resultat = examen.resultat ?? 0;
-    state.date_creation = examen.date_creation;
 
   } else {
     resetForm();
@@ -126,7 +117,7 @@ watch(() => model.value, async () => {
         <template #body>
             <UForm :state="state" :validate="validate" @submit="onSubmit">
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-6">
-                    <PatientSelectMenu v-model="state.patient"/>
+                    <PatientSelectMenu v-model="state.patient" class="xl:col-span-6"/>
                     <UFormField class="xl:col-span-6" label="Type d'examen" name="type_examen" required>
                         <UInput v-model="state.type_examen" class="w-full " />
                     </UFormField>
@@ -135,7 +126,7 @@ watch(() => model.value, async () => {
                         <UTextarea v-model="state.description" :rows="5" class="w-full" />
                     </UFormField>
                     <UFormField class="xl:col-span-12 my-1" label="Date de réalisation" name="date_realisation" required>
-                        <UInput v-model="state.date_realisation" type="date" class="w-full" />
+                        <UInput v-model="state.date_realisation" type="datetime-local" class="w-full" />
                     </UFormField>
                     <UFormField class="xl:col-span-12 my-1" name="urgence" required >
                         <UCheckbox v-model="state.urgence" class="w-full " label="Urgent" />

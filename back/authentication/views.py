@@ -8,6 +8,7 @@ from rest_framework.exceptions import AuthenticationFailed, NotAuthenticated
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from authentication.models import User
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.conf import settings
 
 
 def custom_exception_handler(exc, context):
@@ -52,7 +53,7 @@ class LoginUser(APIView):
                 str(refresh.access_token),
                 max_age=3600 * 2, # 2 hour
                 httponly=True,
-                secure=False,
+                secure=True if settings.DEBUG == False else False,
                 samesite='Lax'
             )
             reponse.set_cookie(
@@ -60,7 +61,7 @@ class LoginUser(APIView):
                 str(refresh),
                 max_age=7*24*3600, # 1 week
                 httponly=True,
-                secure=False,
+                secure=True if settings.DEBUG == False else False,
                 samesite='Lax'
             )
             return reponse
@@ -118,8 +119,17 @@ class RefreshTokenView(APIView):
             value=access_token,
             max_age=3600 * 2, # 2 hour
             httponly=True,
-            secure=False,
+            secure=True if settings.DEBUG == False else False,
             samesite='Lax'
         )
 
+        return response
+    
+class LogoutUser(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        response = Response(status=status.HTTP_205_RESET_CONTENT)
+        response.delete_cookie('access_token')
+        response.delete_cookie('refresh_token')
         return response

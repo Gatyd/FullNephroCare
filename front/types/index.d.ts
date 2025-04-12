@@ -36,7 +36,6 @@ export interface Consultation{
     medecin: User;
     date: string;
     type_consultation: string;
-    motif: string;
     symptomes: string;
     diagnostic: string;
 }
@@ -55,7 +54,7 @@ interface Prescription {
 
 interface Examen {
     id: number;
-    consultation: number; // ID de la consultation (ForeignKey)
+    consultation: number | Consultation; // ID de la consultation (ForeignKey)
     type_examen: string;
     description?: string;
     date_realisation: string; // Date
@@ -86,7 +85,7 @@ interface AlerteCritere {
     date_creation: string; // DateTime
 }
 
-interface Notification {
+interface UserNotification {
     id: number;
     titre: string;
     message: string;

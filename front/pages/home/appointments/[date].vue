@@ -31,6 +31,7 @@ async function fetchAppointments() {
     toast
   ) as Appointment[]
   isLoading.value = false
+  console.log(appointments.value)
 }
 
 function onEdit(){

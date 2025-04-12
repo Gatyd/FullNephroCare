@@ -2,7 +2,7 @@
 import { h, resolveComponent, ref, computed } from 'vue'
 import { upperFirst } from 'scule'
 import type { TableColumn } from '@nuxt/ui'
-import type { Examen } from "~/types";
+import type { Consultation, Examen } from "~/types";
 
 const open = ref(false)
 const UButton = resolveComponent('UButton')
@@ -29,7 +29,7 @@ const columns: TableColumn<Examen>[] = [
   {
     accessorKey: 'consultation',
     header: 'Consultation',
-    cell: ({ row }) => row.original.consultation
+    cell: ({ row }) => (row.original.consultation as Consultation).id
   },
   {
     accessorKey: 'type_examen',

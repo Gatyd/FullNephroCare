@@ -22,8 +22,6 @@ const title = ref("")
 const body = ref("")
 const description = ref("")
 
-const store = useUsersStore()
-
 const table = useTemplateRef('table')
 const toast = useToast()
 const q = ref("");
@@ -226,7 +224,7 @@ function openTextModal(modalTitle: string, modalBody: string, modalDescription: 
 	<TextModal v-if="title" v-model="textModal" :title="title" :body="body" :description="description" />
 	<UDashboardNavbar title="Patients" class="lg:text-2xl font-semibold" :ui="{ root: 'px-0' }">
 		<template #trailing>
-			<UBadge :label="data?.length" variant="subtle" />
+			<UBadge v-if="data?.length as number > 0" :label="data?.length" variant="subtle" />
 		</template>
 		<template #right>
 			<UButton color="primary" label="Nouveau Patient" icon="i-heroicons-plus" class="mx-2"
